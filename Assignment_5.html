@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Assignment 5</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3" style="border:2px dotted navy;background-color: slategrey;color:wheat">
+                <form>
+                    <div class="form-group form-inline">
+                        <p style="padding: 5px">ID</p>
+                        <p id="id1">0</p>
+                    </div>
+                    <div class="form-group form-inline">
+                        <p style="padding: 5px">Code</p>
+                        <input type="number" class="form-control" id="code" required />
+                    </div>
+                    <div class="form-group form-inline">
+                        <p style="padding: 5px">Quantity</p>
+                        <input type="number" class="form-control" id="quantity" required />
+                    </div>
+                    <div class="form-group form-inline">
+                        <p style="padding: 5px">Price</p>
+                        <input type="number" class="form-control" id="price" required />
+                    </div>
+                    <div class="form-group form-inline">
+                        <p style="padding: 5px">Company</p>
+                        <input type="text" class="form-control" id="company" required />
+                    </div>
+                    <div class="form-group form-inline">
+                        <p style="padding: 5px">Contact</p>
+                        <input type="text" class="form-control" id="contact" required />
+                    </div>
+                    <div class="form-group form-inline">
+                        <p style="padding: 5px">Country</p>
+                        <input type="text" class="form-control" id="country" required />
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-primary"
+                            style="border-radius: 15px;margin-left:25%;margin-bottom:10px" onclick="adddata()"
+                            id="submit"><i class="fa fa-paper-plane"></i> Enter Data</button></div>
+                </form>
+            </div>
+            <div class="col-md-9">
+                <fieldset>
+                    <legend>Data Filter</legend>
+                    <div class="form-inline">
+                        <select class="form-control" id="keytake" style="width: fit-content;margin: 5px">
+                            <option>Select an option</option>
+                            <option value="ID">ID</option>
+                            <option value="Code">Code</option>
+                            <option value="Quantity">Quantity</option>
+                            <option value="Price">Price</option>
+                            <option value="company">Company</option>
+                            <option value="contact">Contact</option>
+                            <option value="country">Country</option>
+                        </select>
+                        <input type="text" id="keyword" placeholder="Enter key word" class="form-control"
+                            style="width: fit-content;margin: 5px" />
+                        <button type="button" onclick="filter()" class="btn btn-primary"
+                            style="margin: 5px">Filter</button>
+                        <button type="button" onclick="reset()" class="btn btn-primary">Reset</button>
+                    </div>
+                </fieldset>
+                <table name="table1" width="100%" border="1" style="background-color: white;text-align: right">
+                    <tr style="font: bold;font-size:15pt;text-align:center;color: wheat;background-color: green">
+                        <th>ID</th>
+                        <th>Code</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Company</th>
+                        <th>Contact</th>
+                        <th>Country</th>
+                    </tr>
+                </table>
+                <p id="out"></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        var sum = 0;
+        var id = 0;
+
+        var count = (function () {
+            return ++id;
+        })
+        var objArray = []
+        function User(id, code, quant, price, company, contact, country) {
+            this.id = id;
+            this.code = code;
+            this.quant = quant;
+            this.price = price;
+            this.company = company;
+            this.contact = contact;
+            this.country = country;
+        }
+        function adddata() {
+
+            document.getElementById('id1').innerHTML = count();
+            var code = document.getElementById("code").value;
+            var quant = document.getElementById("quantity").value;
+            var price = document.getElementById("price").value;
+            var company = document.getElementById("company").value;
+            var contact = document.getElementById("contact").value;
+            var country = document.getElementById("country").value;
+            var user = new User(id, code, quant, price, company, contact, country);
+            objArray.push(user)
+
+            var table = document.getElementsByName('table1')[0];
+            addrow(table, id, code, quant, price, company, contact, country);
+            sum += parseInt(quant * price);
+            console.log(objArray)
+
+        }
+
+        function clearTable(table) {
+            var rows = table.rows;
+            var i = rows.length;
+            while (--i) {
+                table.deleteRow(i);
+            }
+        }
+        function addrow(table, id, code, quant, price, company, contact, country) {
+            var newRow = table.insertRow(table.rows.length);
+            var cel1 = newRow.insertCell(0);
+            var cel2 = newRow.insertCell(0);
+            var cel3 = newRow.insertCell(0);
+            var cel4 = newRow.insertCell(0);
+            var cel5 = newRow.insertCell(0);
+            var cel6 = newRow.insertCell(0);
+            var cel7 = newRow.insertCell(0);
+
+
+
+            cel7.innerHTML = id;
+            cel6.innerHTML = code;
+            cel5.innerHTML = quant;
+            cel4.innerHTML = price;
+            cel3.innerHTML = company;
+            cel2.innerHTML = contact;
+            cel1.innerHTML = country;
+
+
+        }
+        function reset() {
+            var table = document.getElementsByName('table1')[0];
+            clearTable(table);
+            objArray.forEach(element => {
+                addrow(table, element.id, element.code, element.quant, element.price, element.company, element.contact, element.country);
+            });
+        }
+        function filter() {
+            var table = document.getElementsByName('table1')[0];
+            clearTable(table);
+
+            objArray.forEach(element => {
+                switch (document.getElementById('keytake').value) {
+                    case 'ID':
+                        if (element.id == document.getElementById('keyword').value) {
+                            addrow(table, element.id, element.code, element.quant, element.price, element.company, element.contact, element.country);
+                        }
+                        break;
+                    case 'Code':
+                        if (element.code == document.getElementById('keyword').value) {
+                            addrow(table, element.id, element.code, element.quant, element.price, element.company, element.contact, element.country);
+                        }
+                        break;
+                    case 'Quantity':
+                        if (element.qant == document.getElementById('keyword').value) {
+                            addrow(table, element.id, element.code, element.quant, element.price, element.company, element.contact, element.country);
+                        }
+                        break;
+                    case 'Price':
+                        if (element.price == document.getElementById('keyword').value) {
+                            addrow(table, element.id, element.code, element.quant, element.price, element.company, element.contact, element.country);
+                        }
+                        break;
+                    case 'company':
+                        if (element.company == document.getElementById('keyword').value) {
+                            addrow(table, element.id, element.code, element.quant, element.price, element.company, element.contact, element.country);
+                        }
+                        break;
+                    case 'contact':
+                        if (element.contact == document.getElementById('keyword').value) {
+                            addrow(table, element.id, element.code, element.quant, element.price, element.company, element.contact, element.country);
+                        }
+                        break;
+                    case 'country':
+                        if (element.country == document.getElementById('keyword').value) {
+                            addrow(table, element.id, element.code, element.quant, element.price, element.company, element.contact, element.country);
+                        }
+                        break;
+                    default:
+                        document.getElementById("out").innerHTML = "Error";
+                }
+            });
+
+        }
+    </script>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+</html>
